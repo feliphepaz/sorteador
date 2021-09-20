@@ -1,27 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sorteador</title>
-  </head>
-  <body>
-    <button
-      class="btn"
-      style="
-        padding: 20px;
-        border: none;
-        background: teal;
-        color: white;
-        cursor: pointer;
-      "
-    >
-      Puxar Comentários
-    </button>
-    <div>
-      <ul class="ul"></ul>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sorteador</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1 class='title'>Sorteador</h1>
+  <section class='container'>
+    <div class='brand'>
+      <p class="instruction">Escolha a conta que deseja realizar o sorteio:</p>
+      <ul>
+        <li><button class="btn">Codelari</button></li>
+      </ul>
     </div>
-    <script src="index.js"></script>
-  </body>
+
+    <div class='posts'>
+      <p class="instruction">Escolha o post referente ao sorteio:</p>
+      <ul></ul>
+    </div>
+  </section>
+  <script src="index.js"></script>
+</body>
+
 </html>
