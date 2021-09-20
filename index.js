@@ -1,19 +1,13 @@
 const btn = document.querySelector("[data-get]");
 
-const token = 'EAALyCMbsjBMBAHx2X87cvPJY1m1qXUzzmNZCqZCyVFiaJlFddimCf9XVWlwZC8E1dc9HLnS2bU040t6j9dcZAyhmV6o8p6kYxtsnfIE92YrsZCkbzNUKchKK7wY6wpx0bChZAnqf5RMBAo1LSRFwfHn0SZBOgybWaqaKPZCmN0Dujm61vva11NGc0MHB0InvYIlpsPmLyCrZBamOUoInWw26kz1D1BcqUNcZCLIXbzNPMNgQZDZD';
+const token = 'EAALyCMbsjBMBAN5gwxsivC6Kq1Q8jJUhiAMQZB92JfrJofgpcArReFThtBcOIJvNHRWudDSPP2LjcBKxjOkx7l9ltMRFnyVm3HjdbGbh4RAJeTaWexdCbPONIMCmmwRDf2ZBgHmR6tfrZAifhUr6CxwsHncQUbInQ0RnS7qpNObrmwmFSamdD69ZBvS8kO2Q1h0ZBobZAyq9Pgm9yLj6v5EiFCdyWkGvAzhha53Sr7SAZDZD';
 
-const tokenEB = 'IGQVJWYVc2eUVVRk01X3BoMGRMM1lVMTVDZAVBDTWlTUm9SQUhxNGR2aHlvQlVTQW5PbS1ZAOXJGZA1haNk1vTmRBS3RLTTR6QWFNX1ppbEQzY3pvNmpVckt2SkVPdWo5TkE1TkVSaVFDVmIwZA0p0NFVVagZDZD';
+const tokenPacha = 'IGQVJXWUFTUDFLQTRiellZAZAVNYLU5aUVlXZATJMUXg1OWRJNVY5QTkyX2doekhKNGQ3YWxwbkJpb04taTg1NHVVOGtjamVsWV9DMWRRMk5KVlQ4OXpWNW1oVnZAZAQjBWeXJKeUlVbklvaUF5U2VZAN0VlcQZDZD';
 
-async function fetchAPI() {
+async function fetchAPI(e) {
+
   btn.classList.add('active');
-
-  // Get Account ID
-  const responseAccount = await fetch(
-    `https://graph.facebook.com/v12.0/me/accounts?access_token=${token}`
-  );
-  const resolveAccount = await responseAccount.json();
-  const getAccount = resolveAccount.data[0].id;
-
+  const getAccount = e.target.id;
 
   // Get Instagram Account ID
   const responseInstagramAccount = await fetch(
@@ -31,7 +25,7 @@ async function fetchAPI() {
 
   // Get Posts Images
   const responseImages = await fetch(
-    `https://graph.instagram.com/me/media?access_token=${tokenEB}&fields=media_url,media_type,caption,permalink`
+    `https://graph.instagram.com/me/media?access_token=${tokenPacha}&fields=media_url,media_type,caption,permalink`
   );
   const resolveImages = await responseImages.json();
   const getImages = resolveImages.data;
@@ -67,25 +61,23 @@ async function buildComment(userCommentId, textComment, winnerId) {
   const responseUserComment = await fetch(`https://graph.facebook.com/v12.0/${userCommentId}?fields=username&access_token=${token}`);
   const resolveUserComment = await responseUserComment.json();
   const userComment = resolveUserComment.username;
-  const formatComment = `@${userComment}: ${textComment}`;
   const match = textComment.match(/\B@\w+/g);
   if (match) {
     if (match.length === 2 && match[0 || 1] !== '@codelariagencia') {
       winners.push(userComment);
-      setTimeout(() => {
         if (winnerId === winners.length - 1) {
           const uniqWinners = [...new Set(winners)];
-          console.log(uniqWinners);
+          const sort = uniqWinners.sort(() => Math.random() - Math.random()).slice(0, 10);
         }
-      }, 1000)
     }
   }
 }
 
 async function getAllComments(postId) {
-  const responseComments = await fetch(`https://graph.facebook.com/v12.0/${postId}?fields=comments&access_token=${token}`);
+  const responseComments = await fetch(`https://graph.facebook.com/v12.0/${postId}?fields=comments.limit(100)&access_token=${token}`);
   const resolveComments = await responseComments.json();
   const comments = resolveComments.comments.data;
+  console.log(comments);
   comments.forEach((comment, index) => {
     buildComment(comment.id, comment.text, index);
   })
