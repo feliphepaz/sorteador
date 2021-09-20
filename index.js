@@ -61,7 +61,9 @@ async function fetchAPI() {
   })
 }
 
-async function buildComment(userCommentId, textComment) {
+const winners = [];
+
+async function buildComment(userCommentId, textComment, winnerId) {
   const responseUserComment = await fetch(`https://graph.facebook.com/v12.0/${userCommentId}?fields=username&access_token=${token}`);
   const resolveUserComment = await responseUserComment.json();
   const userComment = resolveUserComment.username;
@@ -69,7 +71,13 @@ async function buildComment(userCommentId, textComment) {
   const match = textComment.match(/\B@\w+/g);
   if (match) {
     if (match.length === 2 && match[0 || 1] !== '@codelariagencia') {
-      console.log(userComment);
+      winners.push(userComment);
+      setTimeout(() => {
+        if (winnerId === winners.length - 1) {
+          const uniqWinners = [...new Set(winners)];
+          console.log(uniqWinners);
+        }
+      }, 1000)
     }
   }
 }
@@ -78,8 +86,8 @@ async function getAllComments(postId) {
   const responseComments = await fetch(`https://graph.facebook.com/v12.0/${postId}?fields=comments&access_token=${token}`);
   const resolveComments = await responseComments.json();
   const comments = resolveComments.comments.data;
-  comments.forEach(comment => {
-    buildComment(comment.id, comment.text);
+  comments.forEach((comment, index) => {
+    buildComment(comment.id, comment.text, index);
   })
 }
 
