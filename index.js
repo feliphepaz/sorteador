@@ -1,6 +1,6 @@
-const btn = document.querySelector(".btn");
+const btn = document.querySelector("[data-get]");
 
-const token = 'EAALyCMbsjBMBAIZBqyvLg5D8JfOZBWYZCruE4WBTBZBlwXwNBk5vwmGRHqMUcNGUnIQy2n4NZA7ce9p5hlkcYRO5V53SohDCwfKAg1gQOe90FVgVENRzoasd0rAYblUfTQpkIqUsDWLcXdFBsUjfR2HTBJRsCv9pZADQZBF2SLYYsZBs2kFeW6WO4GjZAAveMYVG0tTtShfEGbnH62EqP58JfNHvZBNjvozAgPxa9ZBXHevLAZDZD';
+const token = 'EAALyCMbsjBMBAHx2X87cvPJY1m1qXUzzmNZCqZCyVFiaJlFddimCf9XVWlwZC8E1dc9HLnS2bU040t6j9dcZAyhmV6o8p6kYxtsnfIE92YrsZCkbzNUKchKK7wY6wpx0bChZAnqf5RMBAo1LSRFwfHn0SZBOgybWaqaKPZCmN0Dujm61vva11NGc0MHB0InvYIlpsPmLyCrZBamOUoInWw26kz1D1BcqUNcZCLIXbzNPMNgQZDZD';
 
 const tokenEB = 'IGQVJWYVc2eUVVRk01X3BoMGRMM1lVMTVDZAVBDTWlTUm9SQUhxNGR2aHlvQlVTQW5PbS1ZAOXJGZA1haNk1vTmRBS3RLTTR6QWFNX1ppbEQzY3pvNmpVckt2SkVPdWo5TkE1TkVSaVFDVmIwZA0p0NFVVagZDZD';
 
@@ -50,18 +50,28 @@ async function fetchAPI() {
   })
 
   const imgPosts = document.querySelectorAll('.posts ul li img');
+  const postsLi = document.querySelectorAll('.posts ul li');
   imgPosts.forEach((img, imgId) => {
-    img.addEventListener('click', () => {
+    img.addEventListener('click', (e) => {
+      postsLi[imgId].classList.add('active');
       getAllComments(getPosts[imgId].id);
+      const qtd = document.querySelector('.qtd');
+      qtd.style.display = 'block'
     })
   })
 }
 
-async function buildComment(userComment, textComment) {
-  const responseUserComment = await fetch(`https://graph.facebook.com/v12.0/${userComment}?fields=username&access_token=${token}`);
+async function buildComment(userCommentId, textComment) {
+  const responseUserComment = await fetch(`https://graph.facebook.com/v12.0/${userCommentId}?fields=username&access_token=${token}`);
   const resolveUserComment = await responseUserComment.json();
-  const formatComment = `@${resolveUserComment.username}: ${textComment}`
-  console.log(formatComment);
+  const userComment = resolveUserComment.username;
+  const formatComment = `@${userComment}: ${textComment}`;
+  const match = textComment.match(/\B@\w+/g);
+  if (match) {
+    if (match.length === 2 && match[0 || 1] !== '@codelariagencia') {
+      console.log(userComment);
+    }
+  }
 }
 
 async function getAllComments(postId) {

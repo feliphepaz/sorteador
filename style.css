@@ -75,7 +75,7 @@ body {
   color: blueviolet;
 }
 
-.btn {
+.btn, .btn-start {
   margin-top: 20px;
   border: none;
   font-family: 'Courier New', Courier, monospace;
@@ -83,13 +83,13 @@ body {
   font-size: 1.5em;
   background: blueviolet;
   color: floralwhite;
-  padding: 10px 20px;
+  padding: 20px;
   opacity: .5;
   cursor: pointer;
 }
 
-.btn:hover, .btn.active {
-  opacity: 1;
+.btn:hover, .active {
+  opacity: 1 !important;
   transition: .5s;
 }
 
@@ -111,11 +111,34 @@ body {
   cursor: pointer;
 }
 
-.posts ul li:hover {
+.posts ul li:hover, .qtd input:hover  {
   opacity: 1;
   transition: .5s;
 }
 
+.qtd {
+  display: none;
+}
+
 .posts ul li img {
   width: 200px;
+}
+
+.qtd div {
+  display: flex;
+}
+
+.qtd input {
+  margin-top: 20px;
+  border: none;
+  background: blueviolet;
+  opacity: .5;
+  padding: 15px 20px;
+  width: 50px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: floralwhite;
+  outline: none;
+  margin-right: 20px;
 }
