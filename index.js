@@ -1,6 +1,8 @@
 const btn = document.querySelector("[data-get]");
+const btnSort = document.querySelector("[data-sort]");
+const inputNumber = document.querySelector("[data-number]");
 
-const token = 'EAALyCMbsjBMBAN5gwxsivC6Kq1Q8jJUhiAMQZB92JfrJofgpcArReFThtBcOIJvNHRWudDSPP2LjcBKxjOkx7l9ltMRFnyVm3HjdbGbh4RAJeTaWexdCbPONIMCmmwRDf2ZBgHmR6tfrZAifhUr6CxwsHncQUbInQ0RnS7qpNObrmwmFSamdD69ZBvS8kO2Q1h0ZBobZAyq9Pgm9yLj6v5EiFCdyWkGvAzhha53Sr7SAZDZD';
+const token = 'EAALyCMbsjBMBAOTx9GOfHjhO3bVNo5HO4ZCNVSlJCJgj7ckxIbOhGNno6Fiv5Gq1Hid8H2KVqoHjnirSU9M5ZCc3uI0boiZBiOOz3t5WRuNtJczbG8VjUyzXmIYiyLZChvJkFyTkavfPPFZBI4Vyo7GRYZAZCUCbQAVMduS2S6JduUnkZAEPqUBts8EZCudSaLzzPAcZA6JFZC4jJtglcLjXgbE4yiIXC4t9aZBGXWZBiP6TlcQZDZD';
 
 const tokenPacha = 'IGQVJXWUFTUDFLQTRiellZAZAVNYLU5aUVlXZATJMUXg1OWRJNVY5QTkyX2doekhKNGQ3YWxwbkJpb04taTg1NHVVOGtjamVsWV9DMWRRMk5KVlQ4OXpWNW1oVnZAZAQjBWeXJKeUlVbklvaUF5U2VZAN0VlcQZDZD';
 
@@ -57,31 +59,66 @@ async function fetchAPI(e) {
 
 const winners = [];
 
-async function buildComment(userCommentId, textComment, winnerId) {
+async function buildComment(userCommentId, textComment, winnerId, numberOfWinners) {
   const responseUserComment = await fetch(`https://graph.facebook.com/v12.0/${userCommentId}?fields=username&access_token=${token}`);
   const resolveUserComment = await responseUserComment.json();
   const userComment = resolveUserComment.username;
   const match = textComment.match(/\B@\w+/g);
   if (match) {
-    if (match.length === 2 && match[0 || 1] !== '@opacha_oficial') {
+    if (match.length >= 2 && match[0 || 1] !== '@opacha_oficial') {
       winners.push(userComment);
+      setTimeout(() => {
         if (winnerId === winners.length - 1) {
           const uniqWinners = [...new Set(winners)];
-          const sort = uniqWinners.sort(() => Math.random() - Math.random()).slice(0, 40);
+          const sort = uniqWinners.sort(() => Math.random() - Math.random()).slice(0, numberOfWinners);
+          console.log(sort);
         }
+      }, 1000)
     }
   }
 }
 
 async function getAllComments(postId) {
-  const responseComments = await fetch(`https://graph.facebook.com/v12.0/${postId}?fields=comments.limit(100)&access_token=${token}`);
-  const resolveComments = await responseComments.json();
-  const comments = resolveComments.comments.data;
-  const tst = await fetch(resolveComments.comments.paging.next);
-  const resolveTst = await tst.json();
-  console.log(resolveTst.data);
-  comments.forEach((comment, index) => {
-    buildComment(comment.id, comment.text, index);
+  const responseCommentsPage = [];
+  const resolveCommentsPage = [];
+  const commentsPage = [];
+  
+  responseCommentsPage[1] = await fetch(`https://graph.facebook.com/v12.0/${postId}?fields=comments.limit(100)&access_token=${token}`);
+  resolveCommentsPage[1] = await responseCommentsPage[1].json();
+  commentsPage[1] = resolveCommentsPage[1].comments.data;
+  console.log(commentsPage[1]);
+  responseCommentsPage[2] = await fetch(resolveCommentsPage[1].comments.paging.next);
+  resolveCommentsPage[2] = await responseCommentsPage[2].json();
+  commentsPage[2] = resolveCommentsPage[2].data;
+  console.log(commentsPage[2]);
+
+  let condicao = 3;
+  while (condicao) {
+    let condicaoMenos = condicao - 1;
+    if (resolveCommentsPage[condicaoMenos].paging === undefined) {
+      break;
+    }
+    responseCommentsPage[condicao] = await fetch(resolveCommentsPage[condicaoMenos].paging.next);
+    resolveCommentsPage[condicao] = await responseCommentsPage[condicao].json();
+    commentsPage[condicao] = resolveCommentsPage[condicao].data;
+    console.log(commentsPage[condicao]);
+    condicao++;
+  }
+
+  const allComments = [];
+  for (i = 1; i < condicao; i++) {
+    allComments.push(...commentsPage[i]);
+  }
+  console.log(allComments);
+
+  let inputValue = '';
+  inputNumber.addEventListener('change', () => {
+    inputValue = inputNumber.value;
+  })
+  btnSort.addEventListener('click', () => {
+    allComments.forEach((item, index) => {
+      buildComment(item.id, item.text, index, inputValue);
+    })
   })
 }
 
