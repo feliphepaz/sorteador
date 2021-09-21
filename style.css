@@ -51,8 +51,14 @@ table {
 
 /* Estilos */
 
+:root {
+  --primary: #ff6d0c;
+  --secundary: #202223;
+  --tertiary: floralwhite;
+}
+
 body {
-  background: floralwhite;
+  background: var(--secundary);
   font-family: 'Courier New', Courier, monospace;
   font-weight: bold;
 }
@@ -65,6 +71,7 @@ body {
 
 .instruction {
   margin-top: 60px;
+  color: var(--tertiary);
 }
 
 .title {
@@ -72,7 +79,7 @@ body {
   font-weight: bold;
   text-align: center;
   margin-top: 60px;
-  color: blueviolet;
+  color: var(--primary);
 }
 
 .btn, .btn-start {
@@ -81,7 +88,7 @@ body {
   font-family: 'Courier New', Courier, monospace;
   font-weight: bold;
   font-size: 1.5em;
-  background: blueviolet;
+  background: var(--primary);
   color: floralwhite;
   padding: 20px;
   opacity: .5;
@@ -116,8 +123,21 @@ body {
   transition: .5s;
 }
 
-.qtd {
+.qtd, .result {
   display: none;
+}
+
+.result ul {
+  margin-top: 20px;
+}
+
+.result ul li {
+  padding: 20px 20px 20px 40px;
+  background: var(--primary);
+  width: 50%;
+  color: floralwhite;
+  font-size: 1.5em;
+  margin-bottom: 20px;
 }
 
 .posts ul li img {
@@ -131,7 +151,7 @@ body {
 .qtd input {
   margin-top: 20px;
   border: none;
-  background: blueviolet;
+  background: var(--primary);
   opacity: .5;
   padding: 15px 20px;
   width: 50px;

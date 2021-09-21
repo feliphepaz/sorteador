@@ -2,7 +2,7 @@ const btn = document.querySelector("[data-get]");
 const btnSort = document.querySelector("[data-sort]");
 const inputNumber = document.querySelector("[data-number]");
 
-const token = 'EAALyCMbsjBMBAOTx9GOfHjhO3bVNo5HO4ZCNVSlJCJgj7ckxIbOhGNno6Fiv5Gq1Hid8H2KVqoHjnirSU9M5ZCc3uI0boiZBiOOz3t5WRuNtJczbG8VjUyzXmIYiyLZChvJkFyTkavfPPFZBI4Vyo7GRYZAZCUCbQAVMduS2S6JduUnkZAEPqUBts8EZCudSaLzzPAcZA6JFZC4jJtglcLjXgbE4yiIXC4t9aZBGXWZBiP6TlcQZDZD';
+const token = 'EAALyCMbsjBMBAHOZANEJqOxk1nctqfhmkMKveEZAhJjzRCZBfZAtYnHkWWDsUzn3KC6VI9CbaX0fmS6qtYyZAAmO6pR6el177EC2PmW4JInAel4o8QQONnhIJnuPlKb87agFI2BzdT7kUaoGdZBmpjZAX7XQreQhcMHXeaBK9JZC4jCguBCXoEjhTgEQy4SIluTZAZBKPWX1wZCabFZBAXzBLGqtTSeIPtOCKs2Y8wpkQbSnvgZDZD';
 
 const tokenPacha = 'IGQVJXWUFTUDFLQTRiellZAZAVNYLU5aUVlXZATJMUXg1OWRJNVY5QTkyX2doekhKNGQ3YWxwbkJpb04taTg1NHVVOGtjamVsWV9DMWRRMk5KVlQ4OXpWNW1oVnZAZAQjBWeXJKeUlVbklvaUF5U2VZAN0VlcQZDZD';
 
@@ -36,7 +36,7 @@ async function fetchAPI(e) {
   posts.style.display = 'block';
   const imagesContainer = document.querySelector('.posts ul');
 
-  getImages.forEach((image) => {
+  getImages.slice(0,5).forEach((image) => {
     const imgUrl = image.media_url;
     const li = document.createElement('li');
     const img = document.createElement('img');
@@ -58,22 +58,36 @@ async function fetchAPI(e) {
 }
 
 const winners = [];
+const result = document.querySelector(".result");
+const resultUl = result.children[1];
 
 async function buildComment(userCommentId, textComment, winnerId, numberOfWinners) {
+  btnSort.classList.add('active');
   const responseUserComment = await fetch(`https://graph.facebook.com/v12.0/${userCommentId}?fields=username&access_token=${token}`);
   const resolveUserComment = await responseUserComment.json();
   const userComment = resolveUserComment.username;
   const match = textComment.match(/\B@\w+/g);
   if (match) {
-    if (match.length >= 2 && match[0 || 1] !== '@opacha_oficial') {
+    if (match.length >= 2) {
       winners.push(userComment);
       setTimeout(() => {
+        result.style.display = 'block';
         if (winnerId === winners.length - 1) {
           const uniqWinners = [...new Set(winners)];
           const sort = uniqWinners.sort(() => Math.random() - Math.random()).slice(0, numberOfWinners);
-          console.log(sort);
+          if (sort === []) {
+            const li = document.createElement('li');
+            li.innerText = 'Deu erro, tenta novamente!!!';
+            resultUl.appendChild(li);
+          } else {
+            sort.forEach((sorteado) => {
+              const li = document.createElement('li');
+              li.innerText = `@${sorteado}`;
+              resultUl.appendChild(li);
+            })
+          }
         }
-      }, 1000)
+      }, 2000)
     }
   }
 }
@@ -109,15 +123,17 @@ async function getAllComments(postId) {
   for (i = 1; i < condicao; i++) {
     allComments.push(...commentsPage[i]);
   }
+
   console.log(allComments);
 
   let inputValue = '';
   inputNumber.addEventListener('change', () => {
     inputValue = inputNumber.value;
+    inputNumber.classList.add('active');
   })
   btnSort.addEventListener('click', () => {
     allComments.forEach((item, index) => {
-      buildComment(item.id, item.text, index, inputValue);
+      buildComment(item.id, item.text ,index, inputValue);
     })
   })
 }
