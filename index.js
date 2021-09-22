@@ -90,10 +90,13 @@ async function buildComment(userCommentId, textComment, winnerId, numberOfWinner
                 const li = document.createElement('li');
                 li.innerText = `@${item}`;
                 ul.appendChild(li);
-                console.log(ul);
               })
             })
-
+            const resultUl = document.querySelectorAll('.result ul');
+            resultUl.forEach((ul) => {
+              ul.style.display = 'none';
+            })
+            resultUl[0].style.display = 'block';
           }
         }
       }, 2000)
