@@ -2,7 +2,7 @@ const btn = document.querySelector("[data-get]");
 const btnSort = document.querySelector("[data-sort]");
 const inputNumber = document.querySelector("[data-number]");
 
-const token = 'EAALyCMbsjBMBAHOZANEJqOxk1nctqfhmkMKveEZAhJjzRCZBfZAtYnHkWWDsUzn3KC6VI9CbaX0fmS6qtYyZAAmO6pR6el177EC2PmW4JInAel4o8QQONnhIJnuPlKb87agFI2BzdT7kUaoGdZBmpjZAX7XQreQhcMHXeaBK9JZC4jCguBCXoEjhTgEQy4SIluTZAZBKPWX1wZCabFZBAXzBLGqtTSeIPtOCKs2Y8wpkQbSnvgZDZD';
+const token = 'EAALyCMbsjBMBANOPLPZCqF0fvZAVIwZCbO4DksY617TTrfJDSN4mOzY8bIlGG6yZCLPbT1dJ4R4iJ3wFgZBuGXSEYhbK84rmIuAql2l8wb928EEJQ61iIKMJ1KvGmCzS4AXIcVHr9ZAy8FV3qoESUbbl8n6PZC2n3BNvgbKse6oeREZCvaIVOL7ENr7JHKfjZAVA9UFNi9g9KqR84gZBeJYmiOoTBRvZCgR5yAfMcbQ0mCgYgZDZD';
 
 const tokenPacha = 'IGQVJXWUFTUDFLQTRiellZAZAVNYLU5aUVlXZATJMUXg1OWRJNVY5QTkyX2doekhKNGQ3YWxwbkJpb04taTg1NHVVOGtjamVsWV9DMWRRMk5KVlQ4OXpWNW1oVnZAZAQjBWeXJKeUlVbklvaUF5U2VZAN0VlcQZDZD';
 
@@ -59,7 +59,6 @@ async function fetchAPI(e) {
 
 const winners = [];
 const result = document.querySelector(".result");
-const resultUl = result.children[1];
 
 async function buildComment(userCommentId, textComment, winnerId, numberOfWinners) {
   btnSort.classList.add('active');
@@ -80,11 +79,21 @@ async function buildComment(userCommentId, textComment, winnerId, numberOfWinner
             li.innerText = 'Deu erro, tenta novamente!!!';
             resultUl.appendChild(li);
           } else {
-            sort.forEach((sorteado) => {
-              const li = document.createElement('li');
-              li.innerText = `@${sorteado}`;
-              resultUl.appendChild(li);
+            const n = 5;
+
+            const sliceArrayOfWinners = new Array(Math.ceil(sort.length / n)).fill().map(_ => sort.splice(0, n));
+            
+            sliceArrayOfWinners.forEach((rst) => {
+              const ul = document.createElement('ul');
+              result.appendChild(ul);
+              rst.forEach((item) => {
+                const li = document.createElement('li');
+                li.innerText = `@${item}`;
+                ul.appendChild(li);
+                console.log(ul);
+              })
             })
+
           }
         }
       }, 2000)
