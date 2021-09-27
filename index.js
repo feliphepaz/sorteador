@@ -2,7 +2,7 @@ const btn = document.querySelector("[data-get]");
 const btnSort = document.querySelector("[data-sort]");
 const inputNumber = document.querySelector("[data-number]");
 
-const token = 'EAALyCMbsjBMBANOPLPZCqF0fvZAVIwZCbO4DksY617TTrfJDSN4mOzY8bIlGG6yZCLPbT1dJ4R4iJ3wFgZBuGXSEYhbK84rmIuAql2l8wb928EEJQ61iIKMJ1KvGmCzS4AXIcVHr9ZAy8FV3qoESUbbl8n6PZC2n3BNvgbKse6oeREZCvaIVOL7ENr7JHKfjZAVA9UFNi9g9KqR84gZBeJYmiOoTBRvZCgR5yAfMcbQ0mCgYgZDZD';
+const token = 'EAALyCMbsjBMBAAB3rsZCgl0iZAZAa1SdrYA3fKatu7ZBLZAaaQZAbdzUCp6DVW6x6n9yDSZCfVUYUK3kobMZCweCUdINIWAINcCukyirvEuZAzznZBZAfBQyfKUt7CynM290XizOKcEdhYnUckVVhCIvf6GOpo3jNVKFpFtwzYFTyR231sQPKzVkIQe9n7VOqBoZCuW0MMFXPI1YDXcPToghuUWPjnPQBDMnbPcZD';
 
 const tokenPacha = 'IGQVJXWUFTUDFLQTRiellZAZAVNYLU5aUVlXZATJMUXg1OWRJNVY5QTkyX2doekhKNGQ3YWxwbkJpb04taTg1NHVVOGtjamVsWV9DMWRRMk5KVlQ4OXpWNW1oVnZAZAQjBWeXJKeUlVbklvaUF5U2VZAN0VlcQZDZD';
 
@@ -36,7 +36,7 @@ async function fetchAPI(e) {
   posts.style.display = 'block';
   const imagesContainer = document.querySelector('.posts ul');
 
-  getImages.slice(0,5).forEach((image) => {
+  getImages.slice(0,10).forEach((image) => {
     const imgUrl = image.media_url;
     const li = document.createElement('li');
     const img = document.createElement('img');
@@ -70,7 +70,7 @@ async function buildComment(userCommentId, textComment, winnerId, numberOfWinner
     if (match.length >= 2) {
       winners.push(userComment);
       setTimeout(() => {
-        result.style.display = 'block';
+        result.style.display = 'flex';
         if (winnerId === winners.length - 1) {
           const uniqWinners = [...new Set(winners)];
           const sort = uniqWinners.sort(() => Math.random() - Math.random()).slice(0, numberOfWinners);
@@ -92,11 +92,45 @@ async function buildComment(userCommentId, textComment, winnerId, numberOfWinner
                 ul.appendChild(li);
               })
             })
+
+            const nav = document.querySelector('.result nav');
+            nav.style.display = 'flex';
+
+            // Navegation
+
+            const navBtn = document.querySelectorAll(".nav-btn");
             const resultUl = document.querySelectorAll('.result ul');
+
+            navBtn.forEach(function (btn) {
+              btn.addEventListener("click", handleNav);
+            });
+
             resultUl.forEach((ul) => {
               ul.style.display = 'none';
             })
             resultUl[0].style.display = 'block';
+
+            let iNav = -1;
+            function handleNav(e) {
+              e.preventDefault();
+              if (e.target.innerText === 'Próximo') {
+                if (iNav < (sliceArrayOfWinners.length - 1)) {
+                  iNav++
+                  resultUl.forEach((ul) => {
+                    ul.style.display = 'none';
+                  })
+                  resultUl[iNav].style.display = 'block';
+                }
+              } else {
+                if (iNav > 0) {
+                  iNav--
+                  resultUl.forEach((ul) => {
+                    ul.style.display = 'none';
+                  })
+                  resultUl[iNav].style.display = 'block';
+                }
+              }
+            }
           }
         }
       }, 2000)

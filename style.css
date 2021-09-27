@@ -127,14 +127,28 @@ body {
   display: none;
 }
 
+.result {
+  flex-direction: column;
+}
+
 .result ul {
   margin-top: 20px;
+  order: 1;
+}
+
+.result {
+  width: 50%;
+}
+
+.result nav {
+  order: 2;
+  display: none;
+  justify-content: space-between;
 }
 
 .result ul li {
   padding: 20px 20px 20px 40px;
   background: var(--primary);
-  width: 50%;
   color: floralwhite;
   font-size: 1.5em;
   margin-bottom: 20px;
