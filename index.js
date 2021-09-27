@@ -2,13 +2,14 @@ const btn = document.querySelector("[data-get]");
 const btnSort = document.querySelector("[data-sort]");
 const inputNumber = document.querySelector("[data-number]");
 
-const token = 'EAALyCMbsjBMBAD0ahZASZChTKk8ttnHZCPo06ZCt0XIgXgj03xf5naZAXWU24XA9CQWSZAVhf4qq7ZCSADzBLTVFdhKc6ZB0IWbw9SvcovCfIurwUQYGrZCk28SRTXwnNM1ZACSwhFkGfsGsKtgP6FsF5qzcWpVZAqAuBnwP21ZADYXZCBTJn7xPntnTOCvY4adXgosfwPitV7SikR7PZAZCJZAjf1AhrtasCDxY1JYZD';
+const token = 'EAALyCMbsjBMBAAhSnOojlEVCr01ZCynYPXvG7CKsoxlFFJiDctDeicyNz6Usj3jxAAonYNPAb2luaAtdXnWWkk81uSW7TK5H9OK7BGXbECNXhzY2T2e32ZC0KxZBwckbah3hmZA02wFIlbaO3CLu99aiwhNZBfkChINm4XIxT4DHxrGYufCSPjstU5TaHB6fOiPczi0Kt5GHTeqWaPI8HsPFT10pK3AMZD';
 
 const tokenPacha = 'IGQVJXWUFTUDFLQTRiellZAZAVNYLU5aUVlXZATJMUXg1OWRJNVY5QTkyX2doekhKNGQ3YWxwbkJpb04taTg1NHVVOGtjamVsWV9DMWRRMk5KVlQ4OXpWNW1oVnZAZAQjBWeXJKeUlVbklvaUF5U2VZAN0VlcQZDZD';
 
 async function fetchAPI(e) {
 
   btn.classList.add('active');
+  btn.disabled = true;
   const getAccount = e.target.id;
 
   // Get Instagram Account ID
@@ -33,10 +34,10 @@ async function fetchAPI(e) {
   const getImages = resolveImages.data;
 
   const posts = document.querySelector('.posts');
-  posts.style.display = 'block';
+  posts.classList.add('active-step');
   const imagesContainer = document.querySelector('.posts ul');
 
-  getImages.slice(0,15).forEach((image) => {
+  getImages.slice(0,5).forEach((image) => {
     const imgUrl = image.media_url;
     const li = document.createElement('li');
     const img = document.createElement('img');
@@ -48,13 +49,33 @@ async function fetchAPI(e) {
   const imgPosts = document.querySelectorAll('.posts ul li img');
   const postsLi = document.querySelectorAll('.posts ul li');
   imgPosts.forEach((img, imgId) => {
-    img.addEventListener('click', () => {
+    img.addEventListener('click', choiceImg);
+    function choiceImg() {
       postsLi[imgId].classList.add('active');
-      getAllComments(getPosts[imgId].id);
-      const qtd = document.querySelector('.qtd');
-      qtd.style.display = 'block'
-    })
+      verifyComments(getPosts[imgId].id);
+      isClass();
+    }
   })
+
+  function isClass() {
+    postsLi.forEach((post) => {
+      if (!post.classList.contains('active')) {
+        post.style.display = 'none';
+      }
+    })
+  }
+}
+
+async function verifyComments(postId) {
+  const responseIsComment = await fetch(`https://graph.facebook.com/v12.0/${postId}?fields=comments.limit(100)&access_token=${token}`);
+  const resolveIsComment = await responseIsComment.json();
+  const isComments = resolveIsComment.comments;
+  if (isComments) {
+    getAllComments(postId);
+  } else {
+    const error = document.querySelector('.error');
+    error.style.display = 'block';
+  }
 }
 
 const winners = [];
@@ -70,7 +91,8 @@ async function buildComment(userCommentId, textComment, winnerId, numberOfWinner
     if (match.length >= 2) {
       winners.push(userComment);
       setTimeout(() => {
-        result.style.display = 'flex';
+        loading[1].style.display = 'none'
+        result.classList.add('active-step-flex');
         if (winnerId === winners.length - 1) {
           const uniqWinners = [...new Set(winners)];
           const sort = uniqWinners.sort(() => Math.random() - Math.random()).slice(0, numberOfWinners);
@@ -100,9 +122,15 @@ async function buildComment(userCommentId, textComment, winnerId, numberOfWinner
           const navBtn = document.querySelectorAll(".nav-btn");
           const resultUl = document.querySelectorAll('.result ul');
 
-          navBtn.forEach(function (btn) {
-            btn.addEventListener("click", handleNav);
-          });
+          if (+numberOfWinners >= 6) {
+            navBtn.forEach(function (btn) {
+              btn.addEventListener("click", handleNav);
+            });
+          } else {
+            navBtn.forEach(function (btn) {
+              btn.style.display = 'none';
+            });
+          }
 
           resultUl.forEach((ul) => {
             ul.style.display = 'none';
@@ -119,6 +147,7 @@ async function buildComment(userCommentId, textComment, winnerId, numberOfWinner
                   ul.style.display = 'none';
                 })
                 resultUl[iNav].style.display = 'block';
+                resultUl[iNav].style.animation = 'nextStep 1s forwards';
                 console.log(iNav, (sliceArrayOfWinners.length - 1))
               }
             } else {
@@ -127,6 +156,7 @@ async function buildComment(userCommentId, textComment, winnerId, numberOfWinner
                 resultUl.forEach((ul) => {
                   ul.style.display = 'none';
                 })
+                resultUl[iNav].style.animation = 'previousStep 1s forwards';
                 resultUl[iNav].style.display = 'block';
                 console.log(iNav, (sliceArrayOfWinners.length - 1))
               }
@@ -138,13 +168,17 @@ async function buildComment(userCommentId, textComment, winnerId, numberOfWinner
   }
 }
 
+const loading = document.querySelectorAll('.loading');
+
 async function getAllComments(postId) {
+  loading[0].style.display = 'block';
   const responseCommentsPage = [];
   const resolveCommentsPage = [];
   const commentsPage = [];
   
   responseCommentsPage[1] = await fetch(`https://graph.facebook.com/v12.0/${postId}?fields=comments.limit(100)&access_token=${token}`);
   resolveCommentsPage[1] = await responseCommentsPage[1].json();
+  const isComments = resolveCommentsPage[1].comments;
   commentsPage[1] = resolveCommentsPage[1].comments.data;
   const isPagination = resolveCommentsPage[1].comments.paging;
   console.log(commentsPage[1], 1);
@@ -190,12 +224,17 @@ async function getAllComments(postId) {
 
   console.log(allComments);
 
+  loading[0].style.display = 'none';
+  const qtd = document.querySelector('.qtd');
+  qtd.classList.add('active-step');
+
   let inputValue = '';
   inputNumber.addEventListener('change', () => {
     inputValue = inputNumber.value;
     inputNumber.classList.add('active');
   })
   btnSort.addEventListener('click', () => {
+    loading[1].style.display = 'block'
     if (allComments) {
       allComments.forEach((item, index) => {
         buildComment(item.id, item.text ,index, inputValue);
