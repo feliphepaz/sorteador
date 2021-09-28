@@ -10,8 +10,25 @@
 </head>
 
 <body>
-  <h1 class='title'>Sorteador</h1>
-  <section class='container'>
+  <img class='logo' src="/logo-sorteador.png" alt="">
+  <span class='version'>0.5</span>
+  <section class='container login active-step'>
+    <div class='login-content'>
+      <p class="instruction">O sorteador da Formulaviral foi projetado para sortear uma grande quantidades de vencedores
+        em posts do Instagram. Mas para usufruir de tais benefícios, é necessário uma chave que irá desbloquear o acesso
+        ao aplicativo. Essa chave pode ser encontrada na plataforma de API do Facebook ou pedindo diretamente ao
+        desenvolvedor.</p>
+      <p class="token">Token</p>
+      <div class='access-form'>
+        <input class='token-input' type="text">
+        <button class="btn">Acessar</button>
+      </div>
+      <div class="error-access">
+        <p class="sub-instruction">Insira um número de Token válido</p>
+      </div>
+    </div>
+  </section>
+  <section class='container access'>
     <div class='brand'>
       <p class="instruction">Escolha a conta que deseja realizar o sorteio:</p>
       <ul>
@@ -30,7 +47,7 @@
     </div>
 
     <div class="loading">
-      <p class="instruction">Carregando...</p>
+      <p class="instruction asc">Carregando</p>
       <p class="sub-instruction">Estamos puxando todos os comentários, aguarde um momento.</p>
     </div>
 
@@ -44,7 +61,7 @@
     </div>
 
     <div class="loading">
-      <p class="instruction">Carregando...</p>
+      <p class="instruction asc">Carregando</p>
       <p class="sub-instruction">Estamos sorteando os vencedores, aguarde um momento.</p>
     </div>
 

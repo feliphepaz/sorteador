@@ -1,10 +1,32 @@
 const btn = document.querySelector("[data-get]");
 const btnSort = document.querySelector("[data-sort]");
 const inputNumber = document.querySelector("[data-number]");
+const accessBtn = document.querySelector('.access-form .btn');
+const tokenInput = document.querySelector('.token-input');
+const login = document.querySelector('.login');
+const access = document.querySelector('.access');
 
-const token = 'EAALyCMbsjBMBACOtanpSb87urCB5L4QV0w2G9zQ5Jibr3TKTGbcv4bBZAYfLgFblHPW28NgIFRN2QUujZBuglo1SWyYteuZC1TwajfklRtkISW1DytRIC3CifZCRlQejUbui948ZBX0R3Ts2yRsZCFlRwsOUFDSyA53ZA4qy95f0PsBoEFLEQ9HgyyoJeDVsKfgDVJuQvy779J6o6l0H7hfJ6zrgJFQ73EZD';
+let token = '';
 
 const tokenPacha = 'IGQVJXWUFTUDFLQTRiellZAZAVNYLU5aUVlXZATJMUXg1OWRJNVY5QTkyX2doekhKNGQ3YWxwbkJpb04taTg1NHVVOGtjamVsWV9DMWRRMk5KVlQ4OXpWNW1oVnZAZAQjBWeXJKeUlVbklvaUF5U2VZAN0VlcQZDZD';
+
+tokenInput.addEventListener('change', () => {
+  tokenInput.classList.add('active');
+})
+
+accessBtn.addEventListener('click', () => {
+  const errorAccess = document.querySelector('.error-access');
+  if (tokenInput.value === '' || tokenInput.value.length < 90) {
+    errorAccess.style.display = 'block'
+  } else {
+    errorAccess.style.display = 'none'
+    token = tokenInput.value;
+    accessBtn.classList.add('active');
+    login.classList.remove('active-step');
+    login.style.display = 'none';
+    access.classList.add('active-step')
+  }
+})
 
 async function fetchAPI(e) {
 

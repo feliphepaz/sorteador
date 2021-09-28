@@ -53,7 +53,50 @@ table {
 	border-spacing: 0;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 /* Estilos */
+
+.logo {
+  display: block;
+  margin-top: 60px;
+  margin: 60px auto -20px auto;
+  text-align: center;
+}
+
+.version {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: var(--tertiary);
+  font-size: 0.75em;
+}
+
+.brand, .posts, .qtd, .result, .login-content {
+  background: #4D311E;
+  padding: 60px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+}
+
+.brand .instruction:first-child, .result .instruction:first-child, .posts .instruction:first-child, .qtd .n-comments, .login-content .instruction:first-child {
+  margin-top: 0px;
+}
+
+.result, .posts, .brand, .qtd, .login-content {
+  margin-top: 60px;
+}
+
+.login .token {
+  font-size: 1.5em;
+  color: var(--tertiary);
+}
+
+.login .instruction {
+  margin-bottom: 20px;
+}
 
 :root {
   --primary: #ff6d0c;
@@ -72,6 +115,17 @@ body {
   margin: 0 auto;
   padding: 0 60px;
   margin-bottom: 60px;
+}
+
+.login {
+  flex-direction: column;
+  justify-content: center;
+  width: 60%;
+}
+
+.access {
+  display: none;
+  width: 60%;
 }
 
 .instruction {
@@ -103,14 +157,21 @@ body {
   font-family: 'Courier New', Courier, monospace;
   font-weight: bold;
   font-size: 1.5em;
+  padding: 15px 20px;
   background: var(--primary);
   color: floralwhite;
-  padding: 20px;
   opacity: .5;
   cursor: pointer;
+  outline: none;
 }
 
-.btn:hover, .active {
+.login .btn {
+  margin-top: 0px;
+  width: 30%;
+  margin-left: 10px;
+}
+
+.btn:hover, .active, .token-input:hover {
   opacity: 1 !important;
   transition: .5s;
 }
@@ -165,6 +226,9 @@ body {
 .posts ul {
   margin-top: 20px;
   display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
 .posts li + li {
@@ -197,10 +261,6 @@ body {
   margin-top: 20px;
   order: 1;
   position: relative;
-}
-
-.result {
-  width: 50%;
 }
 
 .result nav {
@@ -238,11 +298,11 @@ body {
   background: var(--primary);
   color: floralwhite;
   opacity: .5;
-  width: 50%;
+  width: 100%;
 }
 
 .n-pages {
-  margin: 0 10px;
+  margin: 0 20px;
   color: floralwhite;
 }
 
@@ -258,19 +318,44 @@ body {
   display: flex;
 }
 
+.access-form {
+  display: flex; 
+  align-items: center; 
+  margin-top: 10px;
+}
+
 .qtd input {
+  width: 100px;
+  margin-right: 10px;
+}
+
+.qtd input, .token-input {
   margin-top: 20px;
   border: none;
   background: var(--primary);
   opacity: .5;
   padding: 15px 20px;
-  width: 50px;
   font-family: 'Courier New', Courier, monospace;
   font-size: 1.5em;
   font-weight: bold;
   color: floralwhite;
   outline: none;
-  margin-right: 20px;
+}
+
+.token-input {
+  display: table;
+  margin-top: 0px;
+  width: 70%;
+  margin-right: 0px;
+}
+
+.error-access {
+  display: none;
+  margin-top: 20px;
+}
+
+.error-access .sub-instruction {
+  color: crimson;
 }
 
 .error, .loading, .error-result {
@@ -296,8 +381,66 @@ body {
   pointer-events:none;
 }
 
-::selection {
-  background: transparent;
-  color: var(--tertiary);
-  text-shadow: none;
+.asc:after {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  -webkit-animation: ellipsis steps(4, end) 900ms infinite;
+  animation: ellipsis steps(4, end) 900ms infinite;
+  content: "\2026"; /* ascii code for the ellipsis character */
+  width: 0px;
+}
+
+@keyframes ellipsis {
+  to {
+    width: 1rem;
+  }
+}
+
+@-webkit-keyframes ellipsis {
+  to {
+    width: 1rem;
+  }
+}
+
+@media (max-width: 820px) {
+  .login, .access {
+    width: 100%;
+  }
+}
+
+@media (max-width: 490px) {
+  .access-form {
+    flex-direction: column;
+  }
+  .token-input, .access-form .btn, .qtd input {
+    width: 100%;
+  }
+  .qtd input {
+    margin-right: 0px;
+  }
+  .access-form .btn {
+    margin-left: 0px;
+    margin-top: 10px;
+  }
+  .qtd div {
+    flex-direction: column;
+  }
+  .qtd .btn {
+    margin-top: 10px;
+  }
+  .result ul li {
+    padding: 15px 20px;
+    font-size: 1em;
+  }
+  .result nav {
+    margin-top: 40px;
+    flex-direction: column;
+  }
+  .n-pages {
+    margin: 10px 0;
+  }
+  .brand, .posts, .qtd, .result, .login-content {
+    padding: 20px;
+  }
 }
