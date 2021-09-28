@@ -1,5 +1,9 @@
 /* Reset */
 
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -73,6 +77,16 @@ body {
 .instruction {
   margin-top: 60px;
   color: var(--tertiary);
+}
+
+.qtd .instruction {
+  margin-top: 20px;
+}
+
+.n-comments {
+  margin-top: 60px;
+  font-size: 1.5em;
+  color: var(--primary);
 }
 
 .title {
@@ -190,9 +204,19 @@ body {
 }
 
 .result nav {
-  order: 2;
+  order: 3;
   display: none;
   justify-content: space-between;
+  align-items: center;
+}
+
+.result .error {
+  order: 2;
+  margin-bottom: 20px;
+}
+
+.result .error .sub-instruction {
+  color: crimson;
 }
 
 .result ul li {
@@ -201,6 +225,29 @@ body {
   color: floralwhite;
   font-size: 1.5em;
   margin-bottom: 20px;
+}
+
+.nav-btn {
+  outline: none;
+  border: none;
+  padding: 15px 20px;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: 1em;
+  cursor: pointer;
+  background: var(--primary);
+  color: floralwhite;
+  opacity: .5;
+  width: 50%;
+}
+
+.n-pages {
+  margin: 0 10px;
+  color: floralwhite;
+}
+
+.nav-btn:hover {
+  opacity: 1;
 }
 
 .posts ul li img {
@@ -226,11 +273,11 @@ body {
   margin-right: 20px;
 }
 
-.error, .loading {
+.error, .loading, .error-result {
   display: none;
 }
 
-.error .instruction {
+.error .instruction, .error-result .instruction {
   color: crimson;
   font-size: 1.5em;
 }
@@ -243,4 +290,14 @@ body {
 .sub-instruction {
   color: var(--tertiary);
   margin-top: 5px;
+}
+
+.posts ul li.active, .btn.active {
+  pointer-events:none;
+}
+
+::selection {
+  background: transparent;
+  color: var(--tertiary);
+  text-shadow: none;
 }

@@ -2,7 +2,7 @@ const btn = document.querySelector("[data-get]");
 const btnSort = document.querySelector("[data-sort]");
 const inputNumber = document.querySelector("[data-number]");
 
-const token = 'EAALyCMbsjBMBAAhSnOojlEVCr01ZCynYPXvG7CKsoxlFFJiDctDeicyNz6Usj3jxAAonYNPAb2luaAtdXnWWkk81uSW7TK5H9OK7BGXbECNXhzY2T2e32ZC0KxZBwckbah3hmZA02wFIlbaO3CLu99aiwhNZBfkChINm4XIxT4DHxrGYufCSPjstU5TaHB6fOiPczi0Kt5GHTeqWaPI8HsPFT10pK3AMZD';
+const token = 'EAALyCMbsjBMBACOtanpSb87urCB5L4QV0w2G9zQ5Jibr3TKTGbcv4bBZAYfLgFblHPW28NgIFRN2QUujZBuglo1SWyYteuZC1TwajfklRtkISW1DytRIC3CifZCRlQejUbui948ZBX0R3Ts2yRsZCFlRwsOUFDSyA53ZA4qy95f0PsBoEFLEQ9HgyyoJeDVsKfgDVJuQvy779J6o6l0H7hfJ6zrgJFQ73EZD';
 
 const tokenPacha = 'IGQVJXWUFTUDFLQTRiellZAZAVNYLU5aUVlXZATJMUXg1OWRJNVY5QTkyX2doekhKNGQ3YWxwbkJpb04taTg1NHVVOGtjamVsWV9DMWRRMk5KVlQ4OXpWNW1oVnZAZAQjBWeXJKeUlVbklvaUF5U2VZAN0VlcQZDZD';
 
@@ -111,7 +111,8 @@ async function buildComment(userCommentId, textComment, winnerId, numberOfWinner
           })
 
           if (numberOfWinners > +uniqWinners.length) {
-            console.log('O número de sortidos é maior do que o número de possíveis ganhadores');
+            const exceedWinners = document.querySelector('.result .error');
+            exceedWinners.style.display = 'block'
           }
 
           const nav = document.querySelector('.result nav');
@@ -138,6 +139,8 @@ async function buildComment(userCommentId, textComment, winnerId, numberOfWinner
           resultUl[0].style.display = 'block';
 
           let iNav = 0;
+          const nPages = document.querySelector('.n-pages');
+          nPages.innerText = `${iNav + 1}/${sliceArrayOfWinners.length}`
           function handleNav(e) {
             e.preventDefault();
             if (e.target.innerText === 'Próximo') {
@@ -148,7 +151,7 @@ async function buildComment(userCommentId, textComment, winnerId, numberOfWinner
                 })
                 resultUl[iNav].style.display = 'block';
                 resultUl[iNav].style.animation = 'nextStep 1s forwards';
-                console.log(iNav, (sliceArrayOfWinners.length - 1))
+                nPages.innerText = `${iNav + 1}/${sliceArrayOfWinners.length}`
               }
             } else {
               if (iNav > 0) {
@@ -158,7 +161,7 @@ async function buildComment(userCommentId, textComment, winnerId, numberOfWinner
                 })
                 resultUl[iNav].style.animation = 'previousStep 1s forwards';
                 resultUl[iNav].style.display = 'block';
-                console.log(iNav, (sliceArrayOfWinners.length - 1))
+                nPages.innerText = `${iNav + 1}/${sliceArrayOfWinners.length}`
               }
             }
           }
@@ -228,6 +231,13 @@ async function getAllComments(postId) {
   const qtd = document.querySelector('.qtd');
   qtd.classList.add('active-step');
 
+  const nComments = document.querySelector('.n-comments');
+  if (allComments.length === 1) {
+    nComments.innerText = `${allComments.length} comentário encontrado`;
+  } else {
+    nComments.innerText = `${allComments.length} comentários encontrados`;
+  }
+
   let inputValue = '';
   inputNumber.addEventListener('change', () => {
     inputValue = inputNumber.value;
@@ -241,8 +251,12 @@ async function getAllComments(postId) {
       })
     }
     setTimeout(() => {
-      const rUl =  document.querySelector('.result ul');
-      console.log(rUl);
+      const rUl = document.querySelector('.result ul');
+      const errorResult = document.querySelector('.error-result');
+      if (!rUl) {
+        loading[1].style.display = 'none'
+        errorResult.style.display = 'block';
+      }
     },5000)
   })
 }

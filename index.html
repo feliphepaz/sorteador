@@ -35,6 +35,7 @@
     </div>
 
     <div class="qtd">
+      <p class="n-comments">tsgshshs</p>
       <p class="instruction">Quantas pessoas você gostaria de sortear?</p>
       <div>
         <input type="number" min="1" data-number>
@@ -47,10 +48,28 @@
       <p class="sub-instruction">Estamos sorteando os vencedores, aguarde um momento.</p>
     </div>
 
+    <div class='error-result'>
+      <p class="instruction">Infelizmente não conseguimos realizar o sorteio</p>
+      <p class="sub-instruction">
+        Porém há alguns motivos do porque isso pode ter acontecido:
+        <br><br>
+        1 - O sorteador da Formulaviral tem como padrão sortear apenas os comentários que tenham duas ou mais menções
+        por comentário. Caso não tenha sido encontrado nenhum comentário que se enquadre nesta regra, o sorteador não
+        irá funcionar.
+        <br><br>
+        2 - Pode ter ocorrido apenas um atropelamento de processos durante as milhares de requisições feitas pelo
+        sorteador. Neste caso, recarregar a página e realizar as etapas com mais calma pode resolver.
+      </p>
+    </div>
+
     <div class="result">
       <p class="instruction">Os sorteados foram:</p>
+      <div class="error">
+        <p class="sub-instruction">Obs: O número de sortidos é maior do que o número de possíveis ganhadores</p>
+      </div>
       <nav>
         <button class="nav-btn">Anterior</button>
+        <p class='n-pages'>0/7</p>
         <button class="nav-btn">Próximo</button>
       </nav>
     </div>
