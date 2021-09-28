@@ -206,13 +206,11 @@ async function getAllComments(postId) {
   const isComments = resolveCommentsPage[1].comments;
   commentsPage[1] = resolveCommentsPage[1].comments.data;
   const isPagination = resolveCommentsPage[1].comments.paging;
-  console.log(commentsPage[1], 1);
 
   if (isPagination) {
     responseCommentsPage[2] = await fetch(resolveCommentsPage[1].comments.paging.next);
     resolveCommentsPage[2] = await responseCommentsPage[2].json();
     commentsPage[2] = resolveCommentsPage[2].data;
-    console.log(commentsPage[2], 2);
   }
 
   let condicao = 3;
@@ -226,7 +224,6 @@ async function getAllComments(postId) {
       responseCommentsPage[condicao] = await fetch(resolveCommentsPage[condicaoMenos].paging.next);
       resolveCommentsPage[condicao] = await responseCommentsPage[condicao].json();
       commentsPage[condicao] = resolveCommentsPage[condicao].data;
-      console.log(commentsPage[condicao], condicao);
       condicao++;
     } else {
       break;
@@ -246,8 +243,6 @@ async function getAllComments(postId) {
   } else {
     allComments.push(...commentsPage[1]);
   }
-
-  console.log(allComments);
 
   loading[0].style.display = 'none';
   const qtd = document.querySelector('.qtd');
