@@ -188,7 +188,7 @@ async function buildComment(userCommentId, textComment, winnerId, numberOfWinner
             }
           }
         }
-      }, 2000)
+      }, 8000)
     }
   }
 }
@@ -274,7 +274,7 @@ async function getAllComments(postId) {
         loading[1].style.display = 'none'
         errorResult.style.display = 'block';
       }
-    },5000)
+    },15000)
   })
 }
 
