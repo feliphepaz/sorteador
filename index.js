@@ -15,6 +15,7 @@ tokenInput.addEventListener('change', () => {
 })
 
 accessBtn.addEventListener('click', () => {
+  tokenInput.classList.toggle('active');
   const errorAccess = document.querySelector('.error-access');
   if (tokenInput.value === '' || tokenInput.value.length < 90) {
     errorAccess.style.display = 'block'
@@ -24,9 +25,16 @@ accessBtn.addEventListener('click', () => {
     accessBtn.classList.add('active');
     login.classList.remove('active-step');
     login.style.display = 'none';
-    access.classList.add('active-step')
+    access.classList.add('active-step');
   }
+  verify();
 })
+
+function verify() {
+  (tokenInput.classList.contains('active') ? console.log('tem ativo') : console.log('n tem'))
+}
+
+verify();
 
 async function fetchAPI(e) {
 
