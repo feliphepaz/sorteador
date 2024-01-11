@@ -1,4 +1,4 @@
-# Sorteador Formulaviral 🍀
+# Sorteador Agência Formula Group 🍀
 
 O sorteador da Agência Formula Group surgiu para solucionar a dificuldade de se sortear muitos usuários ao mesmo tempo em posts de sorteio do Instagram. Além disso, eles precisariam passar antes por alguns requisitos para serem contemplados. O sorteador passou a fazer tudo isso de forma automatizada e com apenas poucos cliques.
 <br>
