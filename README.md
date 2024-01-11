@@ -16,5 +16,5 @@ Manipulando esta array, foi passado o objeto `Set`, para limpar os usuários rep
 **Importante** notar que o sorteador só pode ser acessado via token. Ele é um token gerado pelo próprio Facebook que expira de 2 em 2 horas. Mesmo podendo prolongar a sua duração, eu decidi manter como chave provisória por questões de segurança. O token utilizado no arquivo desse repositório já foi devidamente revogado.
 #
 #### Créditos / Agradecimentos
-_Projeto desenvolvido para a agência Formulaviral._
+_Projeto desenvolvido para a Agência Formula Group._
 
